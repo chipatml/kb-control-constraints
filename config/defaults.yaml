@@ -1,0 +1,46 @@
+# Variable name -> SI unit (QUDT local name or absolute URI) and plausibility
+# window checked on the converted SI value. Ranges are inclusive.
+variables:
+  joint_velocity:
+    si_unit: RAD-PER-SEC
+    plausibility:
+      min: "0"
+      max: "10"
+  tcp_speed:
+    si_unit: M-PER-SEC
+    plausibility:
+      min: "0"
+      max: "5"
+
+quote_check:
+  absolute_tolerance: "0.000001"
+  relative_tolerance: "0.000001"
+
+conflict:
+  # interval (default) or z3 (requires the kbcc[z3] extra)
+  engine: interval
+  absolute_tolerance: "0.000001"
+  relative_tolerance: "0.000001"
+
+card:
+  si_decimal_places: 6
+
+# QUDT local name -> pint unit expression, used to compare a quote against
+# the value stored on the constraint.
+pint_units:
+  DEG-PER-SEC: "degree / second"
+  RAD-PER-SEC: "radian / second"
+  M-PER-SEC: "meter / second"
+  MilliM-PER-SEC: "millimeter / second"
+  DEG_C: "degree_Celsius"
+  K: "kelvin"
+
+# Unit token parsed from a quote -> pint expression. Keys are normalized
+# (degree symbol or deg, always "/s" when a time denominator is present).
+quote_units:
+  "°/s": "degree / second"
+  "deg/s": "degree / second"
+  "rad/s": "radian / second"
+  "mm/s": "millimeter / second"
+  "cm/s": "centimeter / second"
+  "m/s": "meter / second"

@@ -1,0 +1,74 @@
+# Trimmed offline fixture from the QUDT Units vocabulary, release 2.1.47
+# (http://qudt.org/2.1/vocab/unit).
+# The QUDT ontologies are issued under a Creative Commons Attribution 4.0
+# International License (CC BY 4.0). Attribution: QUDT.org.
+# https://creativecommons.org/licenses/by/4.0/
+#
+# Only conversionMultiplier, conversionOffset (when QUDT publishes one),
+# hasQuantityKind, symbol, and an English label are kept, for the units this
+# project converts. Download the full graph with `make download-qudt`.
+# Tests run against this file and do not need network access.
+#
+# Published multipliers used here (lexical form, not binary floats):
+#   DEG-PER-SEC  0.0174532925
+#   RAD-PER-SEC  1.0
+#   M-PER-SEC    1.0
+#   MilliM-PER-SEC  0.001
+#   DEG_C        1.0   offset 273.15
+#   K            1.0
+
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+unit:DEG-PER-SEC a qudt:Unit ;
+  rdfs:label "Degree per Second"@en ;
+  qudt:conversionMultiplier 0.0174532925 ;
+  qudt:hasQuantityKind quantitykind:AngularFrequency ;
+  qudt:hasQuantityKind quantitykind:AngularVelocity ;
+  qudt:symbol "°/s" .
+
+unit:RAD-PER-SEC a qudt:Unit ;
+  rdfs:label "radian per second"@en ;
+  qudt:conversionMultiplier 1.0 ;
+  qudt:hasQuantityKind quantitykind:AngularFrequency ;
+  qudt:hasQuantityKind quantitykind:AngularVelocity ;
+  qudt:symbol "rad/s" .
+
+unit:M-PER-SEC a qudt:Unit ;
+  rdfs:label "metre per second"@en ;
+  qudt:conversionMultiplier 1.0 ;
+  qudt:hasQuantityKind quantitykind:ElectromagneticWavePhaseSpeed ;
+  qudt:hasQuantityKind quantitykind:LinearVelocity ;
+  qudt:hasQuantityKind quantitykind:Speed ;
+  qudt:hasQuantityKind quantitykind:Velocity ;
+  qudt:symbol "m/s" .
+
+unit:MilliM-PER-SEC a qudt:Unit ;
+  rdfs:label "Millimetre per Second"@en ;
+  qudt:conversionMultiplier 0.001 ;
+  qudt:hasQuantityKind quantitykind:LinearVelocity ;
+  qudt:hasQuantityKind quantitykind:Velocity ;
+  qudt:symbol "mm/s" .
+
+unit:DEG_C a qudt:Unit ;
+  rdfs:label "degree Celsius"@en ;
+  qudt:conversionMultiplier 1.0 ;
+  qudt:conversionOffset 273.15 ;
+  qudt:hasQuantityKind quantitykind:BoilingPoint ;
+  qudt:hasQuantityKind quantitykind:FlashPoint ;
+  qudt:hasQuantityKind quantitykind:MeltingPoint ;
+  qudt:hasQuantityKind quantitykind:Temperature ;
+  qudt:symbol "°C" .
+
+unit:K a qudt:Unit ;
+  rdfs:label "kelvin"@en ;
+  qudt:conversionMultiplier 1.0 ;
+  qudt:hasQuantityKind quantitykind:BoilingPoint ;
+  qudt:hasQuantityKind quantitykind:CorrelatedColorTemperature ;
+  qudt:hasQuantityKind quantitykind:FlashPoint ;
+  qudt:hasQuantityKind quantitykind:MeltingPoint ;
+  qudt:hasQuantityKind quantitykind:Temperature ;
+  qudt:hasQuantityKind quantitykind:ThermodynamicTemperature ;
+  qudt:symbol "K" .

@@ -1,0 +1,122 @@
+# SHACL shapes for ex:Constraint. Loaded separately from the data graph.
+# Completeness (minCount/maxCount), datatypes, sh:in for operator and hardness,
+# and value >= 0 for variables whose names end in speed or velocity.
+
+@prefix ex: <http://example.org/robot#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:ConstraintShape a sh:NodeShape ;
+  sh:targetClass ex:Constraint ;
+  sh:property [
+    sh:path ex:subject ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:nodeKind sh:IRI ;
+    sh:message "ex:subject is required and must be an IRI" ;
+  ] ;
+  sh:property [
+    sh:path ex:variable ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+    sh:minLength 1 ;
+    sh:message "ex:variable is required and must be a string" ;
+  ] ;
+  sh:property [
+    sh:path ex:operator ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+    sh:in ( "<=" ">=" "==" "<" ">" ) ;
+    sh:message "ex:operator must be one of <=, >=, ==, <, >" ;
+  ] ;
+  sh:property [
+    sh:path ex:value ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:datatype xsd:decimal ;
+    sh:message "ex:value is required and must be xsd:decimal" ;
+  ] ;
+  sh:property [
+    sh:path ex:unit ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:nodeKind sh:IRI ;
+    sh:message "ex:unit is required and must be a QUDT unit IRI" ;
+  ] ;
+  sh:property [
+    sh:path ex:hardness ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+    sh:in ( "hard" "soft" ) ;
+    sh:message "ex:hardness must be hard or soft" ;
+  ] ;
+  sh:property [
+    sh:path ex:sourceDoc ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+    sh:minLength 1 ;
+    sh:message "ex:sourceDoc is required" ;
+  ] ;
+  sh:property [
+    sh:path ex:page ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:datatype xsd:integer ;
+    sh:minInclusive 1 ;
+    sh:message "ex:page is required and must be an integer >= 1" ;
+  ] ;
+  sh:property [
+    sh:path ex:quote ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+    sh:minLength 1 ;
+    sh:message "ex:quote is required" ;
+  ] ;
+  sh:property [
+    sh:path ex:condition ;
+    sh:maxCount 1 ;
+    sh:nodeKind sh:BlankNode ;
+    sh:message "ex:condition must be a single blank node" ;
+  ] ;
+  sh:sparql [
+    sh:message "Speed and velocity constraint values must be >= 0" ;
+    sh:select """
+      SELECT $this ?speedValue
+      WHERE {
+        $this ex:variable ?variable ;
+              ex:value ?speedValue .
+        FILTER(REGEX(STR(?variable), "(speed|velocity)$", "i"))
+        FILTER(?speedValue < 0)
+      }
+    """ ;
+  ] .
+
+ex:ConditionFieldShape a sh:NodeShape ;
+  sh:targetClass ex:Constraint ;
+  sh:sparql [
+    sh:message "ex:humanPresent must be an xsd:boolean" ;
+    sh:select """
+      SELECT $this ?humanPresent
+      WHERE {
+        $this ex:condition ?cond .
+        ?cond ex:humanPresent ?humanPresent .
+        FILTER(DATATYPE(?humanPresent) != xsd:boolean)
+      }
+    """ ;
+  ] ;
+  sh:sparql [
+    sh:message "ex:inZone must be an IRI" ;
+    sh:select """
+      SELECT $this ?inZone
+      WHERE {
+        $this ex:condition ?cond .
+        ?cond ex:inZone ?inZone .
+        FILTER(!isIRI(?inZone))
+      }
+    """ ;
+  ] .
