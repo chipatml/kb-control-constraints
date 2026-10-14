@@ -1,0 +1,73 @@
+# Robot safety / operating constraints for controller export.
+# Namespace ex: <http://example.org/robot#>
+#
+# c1 is unconditional: UR5e joint j1 velocity limit from the spec sheet.
+# c2 applies only in zoneB while a person is present.
+
+@prefix ex: <http://example.org/robot#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+
+ex:Robot a rdfs:Class ; rdfs:label "Robot" .
+ex:Joint a rdfs:Class ; rdfs:label "Joint" .
+ex:Zone a rdfs:Class ; rdfs:label "Zone" .
+ex:Constraint a rdfs:Class ; rdfs:label "Constraint" .
+ex:Condition a rdfs:Class ; rdfs:label "Condition" .
+
+ex:subject a rdf:Property ; rdfs:domain ex:Constraint ; rdfs:label "subject" .
+ex:variable a rdf:Property ; rdfs:domain ex:Constraint ; rdfs:range xsd:string ; rdfs:label "variable" .
+ex:operator a rdf:Property ; rdfs:domain ex:Constraint ; rdfs:range xsd:string ; rdfs:label "operator" .
+ex:value a rdf:Property ; rdfs:domain ex:Constraint ; rdfs:range xsd:decimal ; rdfs:label "value" .
+ex:unit a rdf:Property ; rdfs:domain ex:Constraint ; rdfs:label "unit" .
+ex:hardness a rdf:Property ; rdfs:domain ex:Constraint ; rdfs:range xsd:string ; rdfs:label "hardness" .
+ex:condition a rdf:Property ; rdfs:domain ex:Constraint ; rdfs:range ex:Condition ; rdfs:label "condition" .
+ex:inZone a rdf:Property ; rdfs:domain ex:Condition ; rdfs:range ex:Zone ; rdfs:label "inZone" .
+ex:humanPresent a rdf:Property ; rdfs:domain ex:Condition ; rdfs:range xsd:boolean ; rdfs:label "humanPresent" .
+ex:sourceDoc a rdf:Property ; rdfs:domain ex:Constraint ; rdfs:range xsd:string ; rdfs:label "sourceDoc" .
+ex:page a rdf:Property ; rdfs:domain ex:Constraint ; rdfs:range xsd:integer ; rdfs:label "page" .
+ex:quote a rdf:Property ; rdfs:domain ex:Constraint ; rdfs:range xsd:string ; rdfs:label "quote" .
+ex:hasJoint a rdf:Property ; rdfs:domain ex:Robot ; rdfs:range ex:Joint ; rdfs:label "hasJoint" .
+ex:partOf a rdf:Property ; rdfs:domain ex:Joint ; rdfs:range ex:Robot ; rdfs:label "partOf" .
+
+ex:ur5e a ex:Robot ;
+  rdfs:label "UR5e" ;
+  ex:hasJoint ex:j1 .
+
+ex:j1 a ex:Joint ;
+  rdfs:label "j1" ;
+  ex:partOf ex:ur5e .
+
+ex:arm1 a ex:Robot ;
+  rdfs:label "arm1" .
+
+ex:zoneA a ex:Zone ; rdfs:label "zoneA" .
+ex:zoneB a ex:Zone ; rdfs:label "zoneB" .
+
+ex:c1 a ex:Constraint ;
+  ex:subject ex:j1 ;
+  ex:variable "joint_velocity" ;
+  ex:operator "<=" ;
+  ex:value "180"^^xsd:decimal ;
+  ex:unit unit:DEG-PER-SEC ;
+  ex:hardness "hard" ;
+  ex:sourceDoc "UR5e_spec.pdf" ;
+  ex:page 4 ;
+  ex:quote "Max joint speed: ±180°/s" .
+
+ex:c2 a ex:Constraint ;
+  ex:subject ex:arm1 ;
+  ex:variable "tcp_speed" ;
+  ex:operator "<=" ;
+  ex:value "0.25"^^xsd:decimal ;
+  ex:unit unit:M-PER-SEC ;
+  ex:hardness "hard" ;
+  ex:condition [
+    a ex:Condition ;
+    ex:inZone ex:zoneB ;
+    ex:humanPresent true ;
+  ] ;
+  ex:sourceDoc "Safety_manual.pdf" ;
+  ex:page 12 ;
+  ex:quote "Reduce TCP speed to 250 mm/s when operators are present." .

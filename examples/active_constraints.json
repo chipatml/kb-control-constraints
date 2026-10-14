@@ -1,0 +1,79 @@
+{
+  "constraints": [
+    {
+      "card": "CONSTRAINT c1: j1.joint_velocity <= 3.141593 RAD-PER-SEC (original: 180.0 DEG-PER-SEC; hardness: hard). SOURCE: UR5e_spec.pdf p.4: \"Max joint speed: ±180°/s\"",
+      "card_sha256": "7ad74a5f4a7172d5587f72fed757d85c94d43c2b7a67e45f763b5cdde9552170",
+      "condition": null,
+      "hardness": "hard",
+      "id": "c1",
+      "issues": [],
+      "operator": "<=",
+      "original": {
+        "unit": "http://qudt.org/vocab/unit/DEG-PER-SEC",
+        "unit_name": "DEG-PER-SEC",
+        "value": "180"
+      },
+      "si": {
+        "unit": "http://qudt.org/vocab/unit/RAD-PER-SEC",
+        "unit_name": "RAD-PER-SEC",
+        "value": "3.14159265"
+      },
+      "source": {
+        "document": "UR5e_spec.pdf",
+        "page": 4,
+        "quote": "Max joint speed: ±180°/s"
+      },
+      "status": "active",
+      "subject": "http://example.org/robot#j1",
+      "subject_name": "j1",
+      "uri": "http://example.org/robot#c1",
+      "variable": "joint_velocity"
+    },
+    {
+      "card": "CONSTRAINT c2: arm1.tcp_speed <= 0.250000 M-PER-SEC (original: 0.25 M-PER-SEC; hardness: hard). SOURCE: Safety_manual.pdf p.12: \"Reduce TCP speed to 250 mm/s when operators are present.\"",
+      "card_sha256": "555a74b336a59febdcded3e02feaba60db468edeefd6131af76f9ec40019b532",
+      "condition": {
+        "human_present": true,
+        "in_zone": "zoneB",
+        "in_zone_uri": "http://example.org/robot#zoneB"
+      },
+      "hardness": "hard",
+      "id": "c2",
+      "issues": [],
+      "operator": "<=",
+      "original": {
+        "unit": "http://qudt.org/vocab/unit/M-PER-SEC",
+        "unit_name": "M-PER-SEC",
+        "value": "0.25"
+      },
+      "si": {
+        "unit": "http://qudt.org/vocab/unit/M-PER-SEC",
+        "unit_name": "M-PER-SEC",
+        "value": "0.25"
+      },
+      "source": {
+        "document": "Safety_manual.pdf",
+        "page": 12,
+        "quote": "Reduce TCP speed to 250 mm/s when operators are present."
+      },
+      "status": "active",
+      "subject": "http://example.org/robot#arm1",
+      "subject_name": "arm1",
+      "uri": "http://example.org/robot#c2",
+      "variable": "tcp_speed"
+    }
+  ],
+  "context": {
+    "human_present": true,
+    "zone": "zoneB",
+    "zone_uri": "http://example.org/robot#zoneB"
+  },
+  "llm": {
+    "mode": "skipped",
+    "reason": "--skip-llm"
+  },
+  "shacl": {
+    "conforms": true,
+    "results": []
+  }
+}
